@@ -1,10 +1,12 @@
 package hu.webuni.cst.kamarasd.model;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,11 +26,16 @@ public class Teacher {
 	
 	@Id
 	@GeneratedValue
+	@EqualsAndHashCode.Include
 	private Long id;
 	
 	private String name;
 	
 	private LocalDate birthdate;
+	
+	@ManyToMany(mappedBy = "teachers")
+	private Set<Course> courses;
+	
 	
 	
 }
