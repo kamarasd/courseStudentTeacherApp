@@ -6,7 +6,6 @@ import hu.webuni.cst.kamarasd.dto.TeacherDto;
 import hu.webuni.cst.kamarasd.model.Teacher;
 
 @Mapper(componentModel = "spring")
-public class TeacherMapper {
-	
+public interface TeacherMapper {
 	TeacherDto teacherToDto(Teacher teacher);
 }

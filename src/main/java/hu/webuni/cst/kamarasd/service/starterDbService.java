@@ -5,9 +5,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hu.webuni.cst.kamarasd.model.Course;
 import hu.webuni.cst.kamarasd.model.Student;
@@ -17,16 +16,16 @@ import hu.webuni.cst.kamarasd.repository.StudentRepository;
 import hu.webuni.cst.kamarasd.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
-public class InitDbService {
+@Service
+public class starterDbService {
 	
-	public CourseRepository courseRepository;
-	public StudentRepository studentRepository;
-	public TeacherRepository teacherRepository;
+	private final CourseRepository courseRepository;
+	private final StudentRepository studentRepository;
+	private final TeacherRepository teacherRepository;
 	
 	@Transactional
-	public void deleteDb () {
+	public void deleteDb() {
 		courseRepository.deleteAll();
 		studentRepository.deleteAll();
 		teacherRepository.deleteAll();
@@ -40,7 +39,7 @@ public class InitDbService {
 		
 		Teacher t1 = createNewTeacher("Nagy Sándor", LocalDate.of(1982, 01, 01));
 		
-		Course c1 = createNewCourse("Magyar nyelvtan", Arrays.asList(t1), Arrays.asList(s1));
+		createNewCourse("Magyar nyelvtan", Arrays.asList(t1), Arrays.asList(s1));
 		
 	}
 	

@@ -32,13 +32,14 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency> 
-		    <groupId>com.querydsl</groupId> 
-		    <artifactId>querydsl-apt</artifactId> 
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<scope>provided</scope>
 		</dependency>
-		<dependency> 
-		    <groupId>com.querydsl</groupId> 
-		    <artifactId>querydsl-jpa</artifactId> 
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>org.flywaydb</groupId>
@@ -125,7 +126,7 @@
 			            </goals>
 			            <configuration>
 			                <outputDirectory>target/generated-sources/java</outputDirectory>
-			                <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+			                <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 			            </configuration>
 			        </execution>
 			    </executions>

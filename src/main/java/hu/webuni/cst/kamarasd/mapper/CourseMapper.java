@@ -2,18 +2,16 @@ package hu.webuni.cst.kamarasd.mapper;
 
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import hu.webuni.cst.kamarasd.dto.CourseDto;
 import hu.webuni.cst.kamarasd.model.Course;
 
 @Mapper(componentModel = "spring")
-public class CourseMapper {
-	
+public interface CourseMapper {
 	CourseDto courseToDto(Course course);
 	
 	@Named("summary")
@@ -28,7 +26,4 @@ public class CourseMapper {
 	@IterableMapping(qualifiedByName = "summary")
 	List<CourseDto> coursesSummariesToDtos(Iterable<Course> findAll);
 	
-	
-	
-
 }

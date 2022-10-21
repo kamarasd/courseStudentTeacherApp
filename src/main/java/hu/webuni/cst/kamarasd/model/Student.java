@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -21,18 +22,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 public class Student {
 	
 	@Id
 	@GeneratedValue
+	@ToString.Include
+	@EqualsAndHashCode.Include
 	private Long id;
 	
+	@ToString.Include
 	private String name;
 	
 	private LocalDate birthdate;
 	
-	private Integer semester;
+	private int semester;
 	
 	@ManyToMany(mappedBy = "students")
 	private Set<Course> courses;

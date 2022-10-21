@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -22,6 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @NamedEntityGraph(name = "Course.students", attributeNodes = @NamedAttributeNode("students"))
 @NamedEntityGraph(name = "Course.teachers", attributeNodes = @NamedAttributeNode("teachers"))
@@ -32,6 +34,7 @@ public class Course {
 	@EqualsAndHashCode.Include()
 	private Long id;
 	
+	@ToString.Include
 	private String name;
 	
 	@ManyToMany
