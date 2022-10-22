@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class CourseService {
 	
 	
-	CourseRepository courseRepository;
+	private final CourseRepository courseRepository;
 	
 	@Transactional
 	public List<Course> findCourse(Predicate predicate, Pageable pageable) {
