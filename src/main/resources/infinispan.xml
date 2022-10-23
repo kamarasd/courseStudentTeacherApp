@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:infinispan:config:13.0 https://infinispan.org/schemas/infinispan-config-13.0.xsd"
+        xmlns="urn:infinispan:config:13.0">
+
+   <cache-container name="SpringCacheManager">
+
+      <local-cache name="pagedCoursesWithFullSearch" >
+         <transaction mode="NONE" />
+         <expiration max-idle="100000" interval="2000"/>
+         <memory max-count="10000"/>
+      </local-cache>
+   </cache-container>
+</infinispan>

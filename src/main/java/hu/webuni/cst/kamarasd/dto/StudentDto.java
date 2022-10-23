@@ -10,6 +10,8 @@ public class StudentDto {
 	private Long id;
 	private String name;
 	private LocalDate birthdate;
-	private Integer semester;
+	private Integer semester;	
+	private String neptunId;
+	private Integer freeSemesters;
 
 }

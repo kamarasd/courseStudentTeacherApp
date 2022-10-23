@@ -1,5 +1,6 @@
 package hu.webuni.cst.kamarasd.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import com.querydsl.core.types.Predicate;
 import hu.webuni.cst.kamarasd.dto.CourseDto;
 import hu.webuni.cst.kamarasd.mapper.CourseMapper;
 import hu.webuni.cst.kamarasd.model.Course;
+import hu.webuni.cst.kamarasd.model.HistoryData;
 import hu.webuni.cst.kamarasd.repository.CourseRepository;
 import hu.webuni.cst.kamarasd.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +54,22 @@ public class CourseController {
 		
 		return fullSearch ? 
 				courseMapper.coursesSummariesToDtos(courseResult) : courseMapper.coursesToDtos(courseResult);
+	}
+	
+	@GetMapping("/{id}/getHistory") 
+	public List<HistoryData<CourseDto>> getCourseHistory(@PathVariable long id){
+		List<HistoryData<Course>> courses = courseService.getCourseHistory(id);
+		List<HistoryData<CourseDto>> historyCourses = new ArrayList<>();
+		
+		courses.forEach(historyData -> {
+			historyCourses.add(new HistoryData<>(courseMapper.courseSummaryToDto(historyData.getData()),
+					historyData.getRevType(),
+					historyData.getRevision(),
+					historyData.getRevDate()
+				));
+		});
+
+		return historyCourses;
 	}
 	
 }

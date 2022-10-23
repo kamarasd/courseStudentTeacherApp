@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
@@ -14,6 +15,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 import hu.webuni.cst.kamarasd.model.Course;
+import hu.webuni.cst.kamarasd.model.HistoryData;
 import hu.webuni.cst.kamarasd.model.QCourse;
 import hu.webuni.cst.kamarasd.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +26,10 @@ public class CourseService {
 	
 	
 	private final CourseRepository courseRepository;
+	private final AuditService auditService;
 	
 	@Transactional
+	@Cacheable("pagedCoursesWithFullSearch")
 	public List<Course> findCourse(Predicate predicate, Pageable pageable) {
 		
 		Page<Course> coursePage = courseRepository.findAll(predicate, pageable);
@@ -41,5 +45,8 @@ public class CourseService {
 		return courses;
 		
 	}
-
+	
+	public List<HistoryData<Course>> getCourseHistory(long id) {
+		return auditService.getCourseHistory(id);
+	}
 }

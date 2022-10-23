@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class starterDbService {
+public class StarterDbService {
 	
 	private final CourseRepository courseRepository;
 	private final StudentRepository studentRepository;
 	private final TeacherRepository teacherRepository;
+	private final JdbcTemplate jdbcTemplate;
 	
 	@Transactional
 	public void deleteDb() {
@@ -30,16 +32,22 @@ public class starterDbService {
 		studentRepository.deleteAll();
 		teacherRepository.deleteAll();
 		
+		jdbcTemplate.update("DELETE FROM course_aud");
+		jdbcTemplate.update("DELETE FROM student_aud");
+		jdbcTemplate.update("DELETE FROM teacher_aud");
 	}
 	
 	@Transactional
 	public void addInitData() {
 		
-		Student s1 = createNewStudent("Kiss Aladár", LocalDate.of(1997, 11, 11), 2);
+		Student s1 = createNewStudent("Kiss Aladár", LocalDate.of(1997, 11, 11), 2, "ABC123");
+		Student s2 = createNewStudent("Kovakövi Enikő", LocalDate.of(0003, 01, 06), 25, "AAA000");
 		
 		Teacher t1 = createNewTeacher("Nagy Sándor", LocalDate.of(1982, 01, 01));
+		Teacher t2 = createNewTeacher("Kovakövi Frédi", LocalDate.of(0001, 05, 06));
 		
 		createNewCourse("Magyar nyelvtan", Arrays.asList(t1), Arrays.asList(s1));
+		createNewCourse("Hittan", Arrays.asList(t2), Arrays.asList(s1,s2));
 		
 	}
 	
@@ -52,12 +60,13 @@ public class starterDbService {
 				.build());
 	}
 	
-	private Student createNewStudent(String name, LocalDate birthdate, int semester) {
+	private Student createNewStudent(String name, LocalDate birthdate, int semester, String neptun) {
 			return studentRepository.save(Student
 					.builder()
 						.name(name)
 						.birthdate(birthdate)
 						.semester(semester)
+						.neptunId(neptun)
 					.build());
 	}
 	

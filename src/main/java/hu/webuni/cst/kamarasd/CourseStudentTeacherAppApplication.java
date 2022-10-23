@@ -3,15 +3,17 @@ package hu.webuni.cst.kamarasd;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
-import hu.webuni.cst.kamarasd.service.starterDbService;
+import hu.webuni.cst.kamarasd.service.StarterDbService;
 import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@EnableCaching
 public class CourseStudentTeacherAppApplication implements CommandLineRunner{
 	
-	private final starterDbService sDService;
+	private final StarterDbService sDService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CourseStudentTeacherAppApplication.class, args);

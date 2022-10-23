@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.envers.Audited;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,6 +26,7 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
+@Audited
 public class Student {
 	
 	@Id
@@ -37,9 +40,15 @@ public class Student {
 	
 	private LocalDate birthdate;
 	
-	private int semester;
+	private Integer semester;
 	
 	@ManyToMany(mappedBy = "students")
 	private Set<Course> courses;
+	
+	@ToString.Include
+	private String neptunId;
+	
+	private Integer freeSemesters;
+	
 
 }
