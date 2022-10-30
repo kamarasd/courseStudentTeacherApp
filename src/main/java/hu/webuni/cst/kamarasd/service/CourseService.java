@@ -1,5 +1,6 @@
 package hu.webuni.cst.kamarasd.service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -48,5 +49,9 @@ public class CourseService {
 	
 	public List<HistoryData<Course>> getCourseHistory(long id) {
 		return auditService.getCourseHistory(id);
+	}
+	
+	public Course getThisHistory(long id, OffsetDateTime date) {
+		return auditService.getHistoryForDefinedClass(id, date);
 	}
 }

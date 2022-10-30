@@ -1,10 +1,12 @@
 package hu.webuni.cst.kamarasd.web;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -70,6 +72,11 @@ public class CourseController {
 		});
 
 		return historyCourses;
+	}
+	
+	@GetMapping("/history") 
+	public void getThisHistory(Long id, @NotNull @Valid OffsetDateTime date) {
+		courseService.getThisHistory(id, date);
 	}
 	
 }

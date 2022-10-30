@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
 @Target({ TYPE, METHOD })
 public @interface RecallNeptunIfFailed {
 
+	int retryTimes() default 5;
+	long waitTime() default 500;
 }

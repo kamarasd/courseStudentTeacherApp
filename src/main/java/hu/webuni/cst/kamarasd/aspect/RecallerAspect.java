@@ -1,40 +1,67 @@
 package hu.webuni.cst.kamarasd.aspect;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.lang.reflect.Method;
 
-import hu.webuni.cst.kamarasd.service.ConnectCentralDbService;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class RecallerAspect {
-	
-	private final ConnectCentralDbService connectCentralDbService = new ConnectCentralDbService();
 	
 	@Pointcut("@annotation(hu.webuni.cst.kamarasd.aspect.RecallNeptunIfFailed) || @within(hu.webuni.cst.kamarasd.aspect.RecallNeptunIfFailed)")
 	public void annotationRecallNeptun() {
 		
 	}
 	
-//	@After("hu.webuni.cst.kamarasd.aspect.RecallerAspect.annotationRecallNeptun()")
-	@AfterThrowing(pointcut = "hu.webuni.cst.kamarasd.aspect.RecallerAspect.annotationRecallNeptun()",
-			throwing = "e")
-	public void recallNeptun(JoinPoint joinPoint) {
-		try {
-			
-		}catch (Exception e) {
-			System.out.println(e);
+	@Around("annotationRecallNeptun()")
+	public Object recallNeptun(ProceedingJoinPoint joinPoint) throws Throwable {
+		
+		RecallNeptunIfFailed recallNeptunIfFailed = null;
+		Signature sign = joinPoint.getSignature();
+		
+		if(sign instanceof MethodSignature) {
+			MethodSignature methodSignature = (MethodSignature) sign;
+			Method method = methodSignature.getMethod();
+			recallNeptunIfFailed = method.getAnnotation(RecallNeptunIfFailed.class);
+		} else {
+			Class<?> declaringType = sign.getDeclaringType();
+			recallNeptunIfFailed = declaringType.getAnnotation(RecallNeptunIfFailed.class); 
 		}
 		
-		//connectCentralDbService.getFreeSemesters(null);
+		System.out.println(recallNeptunIfFailed);
 		
+		int times = recallNeptunIfFailed.retryTimes();
+		long waitTime = recallNeptunIfFailed.waitTime();
 		
+		if( times <= 0) {
+			times = 1;
+		}
+		
+	    for (int numberOfTries = 1; numberOfTries <= times; numberOfTries++) {
+		
+		    System.out.format("time: %d %n", times);
+		 	System.out.format("Tries: %d %n", numberOfTries);
+		    try {
+		    	return joinPoint.proceed();
+		    } catch (Exception e) {
+		      
+		     	if (numberOfTries == times) {
+		      		throw e;
+		      	}
+		            
+		     	if (waitTime > 0) {
+		            Thread.sleep(waitTime);
+		        }
+		    }
+	    }    
+	return null;	
+	    
 	}
 
 }

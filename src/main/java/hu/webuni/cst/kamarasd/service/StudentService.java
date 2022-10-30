@@ -17,13 +17,8 @@ public class StudentService {
 	
 	@Scheduled(cron = "${crontab.central.connect}")
 	public void setFreeSemester() {
-		System.out.println("Free semesters update for each student");
-		studentRepository.findAll()
-			.forEach(s -> {
-				s.setFreeSemesters(connectCentralDbService.getFreeSemesters(s.getNeptunId()));
-				studentRepository.save(s);
-				}
-			);
+		System.out.println("Free semester update for each student");
+		connectCentralDbService.getFreeSemesters();
 	}
 
 }
