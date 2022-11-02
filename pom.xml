@@ -87,8 +87,31 @@
 			<artifactId>infinispan-hibernate-cache-v53</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.6</version>
+		</dependency>
+		<dependency>
 			<groupId>org.infinispan</groupId>
 			<artifactId>infinispan-spring5-embedded</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>io.swagger</groupId>
+		    <artifactId>swagger-annotations</artifactId>
+		    <version>1.6.8</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>jackson-databind-nullable</artifactId>
+		    <version>0.2.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		</dependency>
+		<dependency>
+		       <groupId>org.springframework</groupId>
+		    <artifactId>spring-messaging</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -143,7 +166,31 @@
 			        </execution>
 			    </executions>
 			</plugin>
-		</plugins>
+			<plugin>
+			    <groupId>org.openapitools</groupId>
+			    <artifactId>openapi-generator-maven-plugin</artifactId>
+			    <version>6.2.0</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>generate</goal>
+			            </goals>
+			            <configuration>
+			                <inputSpec>${project.basedir}/src/main/openapi/cst-openapi.yml</inputSpec>
+			                <generatorName>spring</generatorName>
+			                <configOptions>
+			                   <useTags>true</useTags>
+			                   <dateLibary>java8-localdatetime</dateLibary>
+			                   <configPackage>hu.webuni.cst.kamarasd.api.config</configPackage>
+			                   <interfaceOnly>true</interfaceOnly>
+			                </configOptions>
+			                <apiPackage>hu.webuni.cst.kamarasd.api</apiPackage>
+			                <modelPackage>hu.webuni.cst.kamarasd.api.model</modelPackage>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+					</plugins>
 	</build>
 
 </project>

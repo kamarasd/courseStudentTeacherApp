@@ -1,32 +1,42 @@
 package hu.webuni.cst.kamarasd.web;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import java.io.IOException;
 
-import hu.webuni.cst.kamarasd.dto.StudentDto;
-import hu.webuni.cst.kamarasd.mapper.StudentMapper;
-import hu.webuni.cst.kamarasd.model.Student;
-import hu.webuni.cst.kamarasd.repository.StudentRepository;
+import javax.validation.Valid;
+
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import hu.webuni.cst.kamarasd.api.StudentControllerApi;
+import hu.webuni.cst.kamarasd.service.StudentService;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/students")
-public class StudentController {
+@RequiredArgsConstructor
+public class StudentController implements StudentControllerApi {
 	
-	private final StudentRepository studentRepository;
-	private final StudentMapper studentMapper;
-	
-	@GetMapping("/{id}")
-	public StudentDto findById(@PathVariable("id") long id) {
-		Student student = studentRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		return studentMapper.studentToDto(student);
+	private final StudentService studentService;
 		
+	@Override
+	public ResponseEntity<String> uploadStudentProfilePic(Long id, @Valid String fileName, MultipartFile content) {
+		try {
+			studentService.saveProfilePicture(id, content.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().build();
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	@Override
+	public ResponseEntity<Resource> getStudentPicture(Long id) {
+		return ResponseEntity.ok(studentService.getProfilePicture(id));
 	}
 	
-
+	
+	
+	
+	
 }

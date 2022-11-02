@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import hu.webuni.cst.kamarasd.dto.TeacherDto;
+import hu.webuni.cst.kamarasd.api.model.TeacherDto;
 import hu.webuni.cst.kamarasd.mapper.TeacherMapper;
 import hu.webuni.cst.kamarasd.model.Teacher;
 import hu.webuni.cst.kamarasd.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RestController
 @RequestMapping("/api/teachers")
-public class TeacherController {
+public class TeacherControllerOld {
 	
 	private final TeacherRepository teacherRepository;
 	private final TeacherMapper teacherMapper;

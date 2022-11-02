@@ -1,0 +1,326 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: 'http://localhost:8080'
+    description: Generated server url
+paths:
+  /api/courses:
+    post:
+      tags:
+        - course-controller
+      operationId: createNewCourse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+  '/api/teachers/{id}':
+    get:
+      tags:
+        - teacher-controller
+      operationId: findById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TeacherDto'
+  '/api/students/{id}':
+    get:
+      tags:
+        - student-controller
+      operationId: findById_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StudentDto'
+  '/api/students/{id}/setProfile':
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: id
+        in: path
+        required: true
+    post:
+      tags:
+        - student-controller
+      summary: ''
+      operationId: uploadStudentProfilePic
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                content:
+                  type: string
+                  format: binary
+  '/api/courses/{id}/getHistory':
+    get:
+      tags:
+        - course-controller
+      operationId: getCourseHistory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistoryDataCourseDto'
+              examples:
+                example-1:
+                  value:
+                    - data:
+                        id: 0
+                        name: string
+                        students:
+                          - id: 0
+                            name: string
+                            birthdate: '2019-08-24'
+                            semester: 0
+                            neptunId: string
+                            freeSemesters: 0
+                        teachers:
+                          - id: 0
+                            name: string
+                            birthdate: '2019-08-24'
+                      revType: ADD
+                      revision: 0
+                      revDate: '2019-08-24T14:15:22Z'
+  /api/courses/search:
+    get:
+      tags:
+        - course-controller
+      operationId: searchCourses
+      parameters:
+        - name: all
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - schema:
+            type: integer
+          in: query
+          name: page
+        - schema:
+            type: integer
+          in: query
+          name: size
+        - schema:
+            type: array
+            items:
+              type: string
+          in: query
+          name: sort
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseDto'
+  /api/courses/history:
+    get:
+      tags:
+        - course-controller
+      operationId: getThisHistory
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDto'
+  '/api/students/getPicture/{id}':
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - student-controller
+      responses:
+        '200':
+          description: OK
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+      operationId: getStudentPicture
+      description: ''
+components:
+  schemas:
+    CourseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentDto'
+        teachers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeacherDto'
+      x-examples:
+        example-1:
+          id: -9223372036854776000
+          name: string
+          students:
+            - id: 0
+              name: string
+              birthdate: '2019-08-24'
+              semester: 0
+              neptunId: string
+              freeSemesters: 0
+          teachers:
+            - id: 0
+              name: string
+              birthdate: '2019-08-24'
+    StudentDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        birthdate:
+          type: string
+          format: date
+        semester:
+          type: integer
+          format: int32
+        neptunId:
+          type: string
+        freeSemesters:
+          type: integer
+          format: int32
+    TeacherDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        birthdate:
+          type: string
+          format: date
+    HistoryDataCourseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CourseDto'
+        revType:
+          type: string
+          enum:
+            - ADD
+            - MOD
+            - DEL
+        revision:
+          type: integer
+          format: int32
+        revDate:
+          type: string
+          format: date-time
+    Predicate:
+      type: object
+    Pageable:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/Sort'
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int64
+    Sort:
+      type: object
+      properties:
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+        empty:
+          type: boolean
