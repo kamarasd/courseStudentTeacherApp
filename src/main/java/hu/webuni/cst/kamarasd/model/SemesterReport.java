@@ -1,19 +1,9 @@
 package hu.webuni.cst.kamarasd.model;
 
-import java.util.Date;
-
-import org.hibernate.envers.RevisionType;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class SemesterReport {
+public interface SemesterReport {
 	
-	public Long courseId;
-	public String courseName;
-	public double avgSemStudents;
+	public Long getCourseId();
+	public String getCourseName();
+	public double getAvgSemStudents();
+
 }

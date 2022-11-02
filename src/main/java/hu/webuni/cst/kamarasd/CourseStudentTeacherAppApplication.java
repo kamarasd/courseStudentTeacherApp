@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import hu.webuni.cst.kamarasd.service.StarterDbService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @SpringBootApplication
 @RequiredArgsConstructor
 @EnableCaching
+@EnableAsync
 public class CourseStudentTeacherAppApplication implements CommandLineRunner{
 	
 	private final StarterDbService sDService;
