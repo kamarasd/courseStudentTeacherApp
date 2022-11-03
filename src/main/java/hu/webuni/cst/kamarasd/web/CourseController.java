@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.query.criteria.internal.expression.function.CurrentDateFunction;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.SortDefault;
@@ -75,8 +76,7 @@ public class CourseController {
 	}
 	
 	@GetMapping("/history") 
-	public void getThisHistory(Long id, @NotNull @Valid OffsetDateTime date) {
-		courseService.getThisHistory(id, date);
+	public CourseDto getThisHistory(@NotNull @Valid Long id, @NotNull @Valid OffsetDateTime date) {
+		return courseMapper.courseToDto(courseService.getThisHistory(id, date));
 	}
-	
 }
