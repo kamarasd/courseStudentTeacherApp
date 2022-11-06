@@ -18,7 +18,6 @@ import com.querydsl.core.types.Predicate;
 
 import hu.webuni.cst.kamarasd.api.CourseControllerApi;
 import hu.webuni.cst.kamarasd.api.model.CourseDto;
-import hu.webuni.cst.kamarasd.api.model.GetThisHistory200Response;
 import hu.webuni.cst.kamarasd.api.model.HistoryDataCourseDto;
 import hu.webuni.cst.kamarasd.mapper.CourseMapper;
 import hu.webuni.cst.kamarasd.model.Course;
