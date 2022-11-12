@@ -18,6 +18,7 @@ public class CourseStudentTeacherAppApplication implements CommandLineRunner{
 	private final StarterDbService sDService;
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(CourseStudentTeacherAppApplication.class, args);
 	}
 	

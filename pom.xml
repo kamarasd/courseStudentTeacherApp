@@ -113,6 +113,17 @@
 		       <groupId>org.springframework</groupId>
 		    <artifactId>spring-messaging</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+		<!-- For ws calling-->
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -190,7 +201,25 @@
 			        </execution>
 			    </executions>
 			</plugin>
-					</plugins>
+			<plugin>
+				<groupId>com.sun.xml.ws</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<packageName>hu.webuni.cst.wsclient</packageName>
+					<wsdlUrls>
+						<wsdlUrl>http://localhost:8080/services/semesterSetter?wsdl</wsdlUrl>
+					</wsdlUrls>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
