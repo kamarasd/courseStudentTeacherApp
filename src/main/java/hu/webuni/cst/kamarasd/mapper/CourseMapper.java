@@ -22,8 +22,9 @@ public interface CourseMapper {
 	@Named("summary")
 	@Mapping(ignore = true, target = "students")
 	@Mapping(ignore = true, target = "teachers")
+	@Mapping(ignore = true, target = "timetables")
 	CourseDto courseSummaryToDto(Course course);
-	
+
 	Course dtoToCourse(CourseDto courseDto);
 	
 	List<CourseDto> coursesToDtos(Iterable<Course> courses);
