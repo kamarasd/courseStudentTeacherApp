@@ -28,6 +28,6 @@ public class Timetable {
 
     private LocalTime lessonEnd;
 
-    @ManyToMany(mappedBy = "timetables")
-    private Set<Course> courses;
+    @ManyToOne
+    private Course courses;
 }

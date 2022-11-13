@@ -193,6 +193,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CourseDto'
+  '/api/courses/cancel/{id}/{day}':
+    parameters:
+      - schema:
+          type: integer
+          format: int64
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: day
+        in: path
+        required: true
+    put:
+      summary: ''
+      operationId: cancelCourse
+      description: ''
+      responses:
+        '200':
+          description: OK
+      tags:
+        - course-controller
   '/api/students/getPicture/{id}':
     parameters:
       - schema:
@@ -215,13 +237,77 @@ paths:
                 format: binary
       operationId: getStudentPicture
       description: ''
-  '/api/timetable/{id}':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
+  /api/timetables:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - timetable-controller
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimetableDto'
+      operationId: getTimetableBetween
+      parameters:
+        - schema:
+            type: integer
+            format: int64
+          in: query
+          name: studentId
+        - schema:
+            type: integer
+            format: int64
+          in: query
+          name: teacherId
+        - schema:
+            type: string
+            format: date
+          in: query
+          name: from
+        - schema:
+            type: string
+            format: date
+          in: query
+          name: to
+    parameters: []
+  /api/timetables/search:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - timetable-controller
+      operationId: searchForTimetable
+      parameters:
+        - schema:
+            type: integer
+            format: int64
+          in: query
+          name: studentId
+        - schema:
+            type: integer
+            format: int64
+          in: query
+          name: teacherId
+        - schema:
+            type: string
+            format: date
+          in: query
+          name: from
+        - schema:
+            type: string
+          in: query
+          name: course
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimetableDto'
+    parameters: []
 components:
   schemas:
     CourseDto:
@@ -342,11 +428,11 @@ components:
       type: object
       description: ''
       properties:
-        id:
-          type: integer
         lessonDate:
           type: string
         lessonStart:
           type: string
         lessonEnd:
+          type: string
+        courseName:
           type: string
