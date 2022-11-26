@@ -41,6 +41,8 @@ public class Student {
 	private LocalDate birthdate;
 	
 	private Integer semester;
+
+	private Integer balance;
 	
 	@ManyToMany(mappedBy = "students")
 	private Set<Course> courses;
