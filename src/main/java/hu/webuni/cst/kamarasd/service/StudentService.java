@@ -48,14 +48,14 @@ public class StudentService {
 	
 	@Scheduled(cron = "${crontab.central.connect}")
 	public void setFreeSemester() {
-		System.out.println("Free semester update for each student");
+		log.info("Free semester update for each student");
 		
 		try {
 			studentRepository.findAll().forEach(s -> {
 				String neptunId = s.getNeptunId();
 				s.setFreeSemesters(connectCentralDbService.getFreeSemesters(neptunId));
 				studentRepository.save(s);
-				System.out.println("Free semesters saved");
+				log.info("Free semesters saved");
 			});
 		} catch (Exception e){
 			log.error("Connection error occured: " + e);
@@ -87,6 +87,8 @@ public class StudentService {
 
 	@Transactional
 	public void updateBalance(String neptunId, int amount) {
+		System.out.println(neptunId);
+		log.warn("Try to update balance");
 		studentRepository.findStudentsByNeptunId(neptunId).ifPresent(s -> s.setBalance(s.getBalance() + amount));
 	}
 

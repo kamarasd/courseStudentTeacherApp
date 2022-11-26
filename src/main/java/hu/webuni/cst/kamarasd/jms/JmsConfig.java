@@ -1,6 +1,7 @@
 package hu.webuni.cst.kamarasd.jms;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.jms.ConnectionFactory;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
@@ -14,10 +15,10 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
-import javax.jms.ConnectionFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-@EnableAutoConfiguration(exclude={JmsAutoConfiguration.class, ActiveMQAutoConfiguration.class})
+//@EnableAutoConfiguration(exclude={JmsAutoConfiguration.class, ActiveMQAutoConfiguration.class})
 public class JmsConfig {
 
     @Bean
@@ -29,10 +30,11 @@ public class JmsConfig {
         return converter;
     }
 
-    public JmsListenerContainerFactory<?> factory(ConnectionFactory connectionFactory, DefaultJmsListenerContainerFactoryConfigurer config) {
+   public JmsListenerContainerFactory<?> theFactory(ConnectionFactory connectionFactory,
+                                                  DefaultJmsListenerContainerFactoryConfigurer config) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 
-        ((SingleConnectionFactory)connectionFactory).setClientId("cst-App");
+        ((SingleConnectionFactory)connectionFactory).setClientId("cst-app");
         
         config.configure(factory, connectionFactory);
         factory.setSubscriptionDurable(true);
