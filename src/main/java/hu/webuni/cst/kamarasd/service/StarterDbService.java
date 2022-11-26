@@ -46,8 +46,8 @@ public class StarterDbService {
 	@Transactional
 	public void addInitData() {
 		
-		Student s1 = createNewStudent("Kiss Aladár", LocalDate.of(1997, 11, 11), 2, "ABC123");
-		Student s2 = createNewStudent("Kovakövi Enikő", LocalDate.of(0003, 01, 06), 25, "AAA000");
+		Student s1 = createNewStudent("Kiss Aladár", LocalDate.of(1997, 11, 11), 2, "ABC123", 0);
+		Student s2 = createNewStudent("Kovakövi Enikő", LocalDate.of(0003, 01, 06), 25, "AAA000", 0);
 		
 		Teacher t1 = createNewTeacher("Nagy Sándor", LocalDate.of(1982, 01, 01));
 		Teacher t2 = createNewTeacher("Kovakövi Frédi", LocalDate.of(0001, 05, 06));
@@ -77,13 +77,14 @@ public class StarterDbService {
 				.build());
 	}
 	
-	private Student createNewStudent(String name, LocalDate birthdate, int semester, String neptun) {
+	private Student createNewStudent(String name, LocalDate birthdate, int semester, String neptun, Integer balance) {
 			return studentRepository.save(Student
 					.builder()
 						.name(name)
 						.birthdate(birthdate)
 						.semester(semester)
 						.neptunId(neptun)
+					    .balance(balance)
 					.build());
 	}
 	

@@ -1,4 +1,4 @@
-package hu.webuni.financialclient.dto;
+package hu.webuni.kamarasd.financialclient.dto;
 
 import lombok.Data;
 

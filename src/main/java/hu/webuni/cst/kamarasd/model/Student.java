@@ -42,6 +42,8 @@ public class Student {
 	
 	private Integer semester;
 
+	@ToString.Include
+	@EqualsAndHashCode.Include
 	private Integer balance;
 	
 	@ManyToMany(mappedBy = "students")

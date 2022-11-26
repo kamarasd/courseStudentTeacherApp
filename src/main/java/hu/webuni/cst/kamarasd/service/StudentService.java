@@ -87,9 +87,8 @@ public class StudentService {
 
 	@Transactional
 	public void updateBalance(String neptunId, int amount) {
-		System.out.println(neptunId);
-		log.warn("Try to update balance");
-		studentRepository.findStudentsByNeptunId(neptunId).ifPresent(s -> s.setBalance(s.getBalance() + amount));
+		log.warn("Try to update balance for " + neptunId);
+		studentRepository.findStudentsByNeptunId(neptunId).ifPresent(student -> student.setBalance(student.getBalance() + amount));
 	}
 
 }

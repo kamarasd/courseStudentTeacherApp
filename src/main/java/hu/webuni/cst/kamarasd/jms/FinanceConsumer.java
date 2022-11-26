@@ -1,7 +1,7 @@
 package hu.webuni.cst.kamarasd.jms;
 
 import hu.webuni.cst.kamarasd.service.StudentService;
-import hu.webuni.financialclient.dto.FinanceDto;
+import hu.webuni.kamarasd.financialclient.dto.FinanceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.annotation.JmsListener;
