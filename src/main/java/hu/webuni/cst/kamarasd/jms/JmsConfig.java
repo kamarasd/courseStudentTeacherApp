@@ -1,8 +1,10 @@
 package hu.webuni.cst.kamarasd.jms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.activemq.broker.BrokerService;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
+import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
@@ -15,6 +17,7 @@ import org.springframework.jms.support.converter.MessageType;
 import javax.jms.ConnectionFactory;
 
 @Configuration
+@EnableAutoConfiguration(exclude={JmsAutoConfiguration.class, ActiveMQAutoConfiguration.class})
 public class JmsConfig {
 
     @Bean
@@ -33,5 +36,6 @@ public class JmsConfig {
         
         config.configure(factory, connectionFactory);
         factory.setSubscriptionDurable(true);
+        return factory;
     }
 }

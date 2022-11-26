@@ -124,8 +124,8 @@
 			<version>5.17.0</version>
 		</dependency>
 		<dependency>
-            <groupId>org.messaginghub</groupId>
-            <artifactId>pooled-jms</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
         </dependency>
 	</dependencies>
 
