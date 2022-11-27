@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.Audited;
 
 import lombok.AllArgsConstructor;
@@ -21,11 +22,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Audited
-public class Teacher {
+public class Teacher extends CstUserDetails{
 	
 	@Id
 	@GeneratedValue
@@ -38,7 +39,10 @@ public class Teacher {
 	
 	@ManyToMany(mappedBy = "teachers")
 	private Set<Course> courses;
-	
-	
-	
+
+
+	@Override
+	public UserType getUserType() {
+		return UserType.TEACHER;
+	}
 }

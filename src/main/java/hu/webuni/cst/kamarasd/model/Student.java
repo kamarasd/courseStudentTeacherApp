@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.Audited;
 
 import lombok.AllArgsConstructor;
@@ -22,12 +23,12 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Audited
-public class Student {
+@SuperBuilder
+public class Student extends CstUserDetails {
 	
 	@Id
 	@GeneratedValue
@@ -53,6 +54,9 @@ public class Student {
 	private String neptunId;
 	
 	private Integer freeSemesters;
-	
 
+	@Override
+	public UserType getUserType() {
+		return UserType.STUDENT;
+	}
 }

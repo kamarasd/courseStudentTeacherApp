@@ -10,15 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import hu.webuni.cst.kamarasd.model.*;
-import hu.webuni.cst.kamarasd.repository.TimetableRepository;
+import hu.webuni.cst.kamarasd.repository.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import hu.webuni.cst.kamarasd.repository.CourseRepository;
-import hu.webuni.cst.kamarasd.repository.StudentRepository;
-import hu.webuni.cst.kamarasd.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +27,8 @@ public class StarterDbService {
 	private final TeacherRepository teacherRepository;
 	private final JdbcTemplate jdbcTemplate;
 	private final TimetableRepository timetableRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final CstUserRepository cstUserRepository;
 	
 	@Transactional
 	public void deleteDb() {
@@ -36,21 +36,24 @@ public class StarterDbService {
 		courseRepository.deleteAll();
 		studentRepository.deleteAll();
 		teacherRepository.deleteAll();
+		cstUserRepository.deleteAll();
 
 		jdbcTemplate.update("DELETE FROM course_aud");
 		jdbcTemplate.update("DELETE FROM student_aud");
 		jdbcTemplate.update("DELETE FROM teacher_aud");
 		jdbcTemplate.update("DELETE FROM timetable_aud");
+		jdbcTemplate.update("DELETE FROM cst_user_details_aud");
+
 	}
 	
 	@Transactional
 	public void addInitData() {
 		
-		Student s1 = createNewStudent("Kiss Aladár", LocalDate.of(1997, 11, 11), 2, "ABC123", 0);
-		Student s2 = createNewStudent("Kovakövi Enikő", LocalDate.of(0003, 01, 06), 25, "AAA000", 0);
+		Student s1 = createNewStudent("Kiss Aladár", LocalDate.of(1997, 11, 11), 2, "ABC123", 0, "s1", "pass");
+		Student s2 = createNewStudent("Kovakövi Enikő", LocalDate.of(0003, 01, 06), 25, "AAA000", 0, "s2", "pass");
 		
-		Teacher t1 = createNewTeacher("Nagy Sándor", LocalDate.of(1982, 01, 01));
-		Teacher t2 = createNewTeacher("Kovakövi Frédi", LocalDate.of(0001, 05, 06));
+		Teacher t1 = createNewTeacher("Nagy Sándor", LocalDate.of(1982, 01, 01), "t1", "pass");
+		Teacher t2 = createNewTeacher("Kovakövi Frédi", LocalDate.of(0001, 05, 06), "t2", "pass");
 		
 		Course c1 = createNewCourse("Magyar nyelvtan", Arrays.asList(t1), Arrays.asList(s1), 2022, Semester.SemesterType.FALL);
 		Course c2 = createNewCourse("Hittan", Arrays.asList(t2), Arrays.asList(s1,s2), 2022, Semester.SemesterType.SPRING);
@@ -77,22 +80,26 @@ public class StarterDbService {
 				.build());
 	}
 	
-	private Student createNewStudent(String name, LocalDate birthdate, int semester, String neptun, Integer balance) {
-			return studentRepository.save(Student
+	private Student createNewStudent(String name, LocalDate birthdate, int semester, String neptun, Integer balance, String user, String password) {
+		return studentRepository.save(Student
 					.builder()
 						.name(name)
 						.birthdate(birthdate)
 						.semester(semester)
 						.neptunId(neptun)
 					    .balance(balance)
+						.username(user)
+						.password(passwordEncoder.encode(password))
 					.build());
 	}
 	
-	private Teacher createNewTeacher(String name, LocalDate birthdate) {
+	private Teacher createNewTeacher(String name, LocalDate birthdate, String username, String password) {
 		return teacherRepository.save(Teacher
 				.builder()
 					.name(name)
 					.birthdate(birthdate)
+						.username(username)
+						.password(passwordEncoder.encode(password))
 				.build());
 	}
 
