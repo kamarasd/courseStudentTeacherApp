@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers("/api/stomp/**").permitAll()
+                .antMatchers("/services/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/courses/**").hasAuthority("TEACHER")
                 .antMatchers(HttpMethod.GET, "/api/courses/**").hasAuthority("TEACHER")
                 .anyRequest().authenticated();

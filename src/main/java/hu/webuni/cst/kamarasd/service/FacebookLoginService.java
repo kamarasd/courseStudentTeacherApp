@@ -24,6 +24,7 @@ public class FacebookLoginService {
         private String email;
         private long id;
     }
+
     public UserDetails getUserDetailsForToken(String facebookToken) {
 
         FacebookData facebookData = getEmailOfFbUser(facebookToken);

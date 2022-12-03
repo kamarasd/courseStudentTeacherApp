@@ -36,6 +36,7 @@ public abstract class CstUserDetails {
     private String username;
     private String password;
     private String facebookId;
+    private String googleId;
 
     public abstract UserType getUserType();
 }

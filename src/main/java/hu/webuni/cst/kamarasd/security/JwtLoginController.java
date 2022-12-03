@@ -2,6 +2,7 @@ package hu.webuni.cst.kamarasd.security;
 
 import hu.webuni.cst.kamarasd.dto.LoginDto;
 import hu.webuni.cst.kamarasd.service.FacebookLoginService;
+import hu.webuni.cst.kamarasd.service.GoogleLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,16 +24,24 @@ public class JwtLoginController {
     @Autowired
     FacebookLoginService facebookLoginService;
 
+    @Autowired
+    GoogleLoginService googleLoginService;
+
     @PostMapping("/api/login")
     public String login(@RequestBody LoginDto loginDto) {
 
         UserDetails userDetails = null;
         String facebookToken = loginDto.getFacebookToken();
+        String googleToken = loginDto.getGoogleToken();
 
         if(ObjectUtils.isEmpty(facebookToken)) {
-            Authentication authentication = authenticationManager.
-                    authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
-            userDetails = (UserDetails) authentication.getPrincipal();
+            if(ObjectUtils.isEmpty(googleToken)) {
+                Authentication authentication = authenticationManager.
+                        authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+                userDetails = (UserDetails) authentication.getPrincipal();
+            } else {
+                googleLoginService.getUserDetailsForToken(googleToken);
+            }
         } else {
             facebookLoginService.getUserDetailsForToken(facebookToken);
         }

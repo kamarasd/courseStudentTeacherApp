@@ -1,0 +1,3 @@
+A financialClient és a NeptunWsClient azért került bele az app könyvtárába és nem mellé,
+mert a github alkalmazásával nem így készült elsőre a branch.
+Ha ezt a kettőt kirakjuk a ebből a könyvtárból és projektként behúzzuk, akkor működnie kell.

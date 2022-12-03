@@ -7,9 +7,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import hu.webuni.cst.kamarasd.model.Student;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -49,13 +51,15 @@ public class StudentService {
 	@Scheduled(cron = "${crontab.central.connect}")
 	public void setFreeSemester() {
 		log.info("Free semester update for each student");
-		
+
 		try {
 			studentRepository.findAll().forEach(s -> {
 				String neptunId = s.getNeptunId();
-				s.setFreeSemesters(connectCentralDbService.getFreeSemesters(neptunId));
-				studentRepository.save(s);
+				//s.setFreeSemesters(connectCentralDbService.getFreeSemesters(neptunId));
+				connectCentralDbService.askFreeSemesterSetter(neptunId);
+				//studentRepository.save(s);
 				log.info("Free semesters saved");
+
 			});
 		} catch (Exception e){
 			log.error("Connection error occured: " + e);
@@ -89,6 +93,11 @@ public class StudentService {
 	public void updateBalance(String neptunId, int amount) {
 		log.warn("Try to update balance for " + neptunId);
 		studentRepository.findStudentsByNeptunId(neptunId).ifPresent(student -> student.setBalance(student.getBalance() + amount));
+	}
+
+	@Transactional
+	public void setFreeSemester(String neptunId, int numFreeSemesters) {
+		studentRepository.findStudentsByNeptunId(neptunId).ifPresent(s -> s.setFreeSemesters(numFreeSemesters));
 	}
 
 }

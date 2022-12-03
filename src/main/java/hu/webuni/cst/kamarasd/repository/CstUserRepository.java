@@ -9,4 +9,6 @@ public interface CstUserRepository extends JpaRepository<CstUserDetails, Long> {
 
     Optional<CstUserDetails> findByUsername(String username);
     Optional<CstUserDetails> findByFacebookId(String fbId);
+
+    Optional<CstUserDetails> findByGoogleId(String gId);
 }

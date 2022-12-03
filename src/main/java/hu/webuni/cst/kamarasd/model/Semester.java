@@ -1,5 +1,6 @@
 package hu.webuni.cst.kamarasd.model;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import lombok.*;
 
 import javax.persistence.Embeddable;

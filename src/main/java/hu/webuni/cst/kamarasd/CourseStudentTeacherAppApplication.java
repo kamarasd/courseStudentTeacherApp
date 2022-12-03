@@ -24,8 +24,8 @@ public class CourseStudentTeacherAppApplication implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-		sDService.deleteDb();
-		sDService.addInitData();
+		//sDService.deleteDb();
+		//sDService.addInitData();
 	}
 	
 
